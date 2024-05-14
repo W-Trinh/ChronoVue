@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
+import * as Sparql from './Sparql';
 
 function App() {
+  Sparql.queryWikidata();
+  Sparql.queryDbpedia();
   return (
     <div className="App">
       <header className="App-header">
