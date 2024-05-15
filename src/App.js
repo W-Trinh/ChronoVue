@@ -4,9 +4,11 @@ import * as Sparql from './Sparql';
 
 function App() {
   return (
-    <div className="bg-blue-200 min-h-screen flex items-center justify-center">
-      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  ">
-        <ContentPanel/>
+    <div className="bg-blue-200 min-h-screen relative">
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="size-4/6">
+          <ContentPanel/>
+        </div>
       </div>
     </div>
   );
