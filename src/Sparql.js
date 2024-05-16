@@ -13,6 +13,7 @@ async function queryDbpedia(query) {
   }
 
 export async function getCountries(){
+    let result = {}
     const wallahi = await queryWikidata(
         'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
         'PREFIX wd:<http://www.wikidata.org/entity/>'+
@@ -23,26 +24,59 @@ export async function getCountries(){
         'FILTER((LANG(?label)) = \"en\")}'
     );
 
-    for (const elt of wallahi){
-        getHistoricalEventFromCountry(elt.idcountry.value, elt.label.value)
+    for (const country of wallahi){
+        result[country.label.value] = await getHistoricalEventFromCountry(country.idcountry.value, country.label.value)
     }
+
+    console.log(result)
 }
 
 export async function getHistoricalEventFromCountry(country, countryName){
+    let result = {}
     const wallahi = await queryWikidata(
         'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
         'PREFIX wd:<http://www.wikidata.org/entity/>'+
-        'SELECT ?event ?label ?start ?end WHERE {'+
+        'SELECT ?event ?label ?themeLabel ?start ?end ?freebase WHERE {'+
           '?event wdt:P31/wdt:P279* wd:Q13418847.'+
           '?event rdfs:label ?label;'+
-            'wdt:P17 <' + country + '>.'+
-          //'?event wdt:P31 ?theme.'+
-          //'?theme rdfs:label ?themeLabel.'+
+            'wdt:P17 <' + country + '>;'+
+            'wdt:P646 ?freebase.'+
+          '?event wdt:P31 ?theme.'+
+          '?theme rdfs:label ?themeLabel.'+
           '?event wdt:P580 ?start.'+
           '?event wdt:P582 ?end.'+
-          //'FILTER((LANG(?themeLabel)) = \"en\")'+
+          'FILTER((LANG(?themeLabel)) = \"en\")'+
           'FILTER((LANG(?label)) = \"en\")}'
     )
-        console.log(countryName)
-        console.log(wallahi)
+
+    for (const event of wallahi){
+        if (typeof(result[event.label.value]) === 'undefined'){
+            const abstract = await getAbstractOfEvent(event.freebase.value)
+            result[event.label.value] = {
+                'start':event.start.value,
+                'end':event.end.value,
+                'theme': [event.themeLabel.value],
+                'abstract': abstract,
+            }
+        } else {
+            result[event.label.value]['theme'].push(event.themeLabel.value)
+        }
+    }
+    return result
+}
+
+export async function getAbstractOfEvent(freebaseId){
+    const wallahi = await queryDbpedia(
+        'PREFIX dbo: <http://dbpedia.org/ontology/>'+
+        'SELECT ?abstract WHERE {'+
+        '?o owl:sameAs <http://rdf.freebase.com/ns/m.'+freebaseId.substring(3)+'>;'+
+            'dbo:abstract ?abstract.'+
+        'FILTER((LANG(?abstract )) = \"en\")'+
+        '}'
+    )
+    if(wallahi.length>0){
+        return(wallahi[0].abstract.value)
+    } else {
+        return("No information found")
+    }
 }
