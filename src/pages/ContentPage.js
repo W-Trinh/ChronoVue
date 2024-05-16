@@ -13,11 +13,11 @@ let contenu = {
 
 function ContentPage() {
   return (
-    <div className="relative bg-blue-200 grid grid-cols-10 grid-rows-10 h-screen p-8">
+    <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen p-8">
       <div className='col-span-2 row-span-8 pr-8 pl-8'>
         <SidePanel head="Événements antérieurs" content={contenu}/>
       </div>
-      <div className='col-start-3 row-span-1 col-span-6 text-center font-bold text-3xl text-center pt-4'>ChronoVue ça déchire</div>
+      <div className='col-start-3 row-span-1 col-span-6 text-center font-bold text-3xl text-center pt-4'><h1 className='text-white'>ChronoVue ça déchire</h1></div>
       <div class="row-start-2 col-start-3 row-span-7 col-span-6 overflow-hidden">   
         <ContentPanel/>  
       </div>

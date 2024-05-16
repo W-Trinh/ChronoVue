@@ -1,9 +1,9 @@
 import React from 'react';
-import logo from '../logo.svg';
+import logo from '../resources/img/logo.svg';
 
 function ContentPanel() {
   return (
-    <div className="bg-white text-black p-4 border-2 border-solid rounded h-full overflow-auto">
+    <div className="bg-orange-950 opacity-55 text-white p-4 border-2 border-solid rounded h-full overflow-auto">
       <div className="grid grid-cols-3 grid-rows-10 gap-4 h-full">
         <div className="col-span-2 row-span-1">
           <h1 className="font-bold text-3xl text-center">Hello la team</h1>
