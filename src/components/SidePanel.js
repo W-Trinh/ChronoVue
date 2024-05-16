@@ -4,7 +4,7 @@ import 'tippy.js/dist/tippy.css';
 
 function ContentPanel({head, content}) {
     return (
-        <div className="bg-white text-black border-2 border-solid rounded h-full overflow-auto">
+        <div className="bg-orange-950 opacity-55 text-white border-2 border-solid rounded h-full overflow-auto">
             <div className="grid grid-rows-10 h-full">
                 <div className='row-span-1'>
                     <h1 className="font-bold text-3xl text-center p-4">{head}</h1>

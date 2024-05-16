@@ -108,3 +108,10 @@
   box-shadow: none;
   transform: translateY(0);
 }
+
+.bgImage {
+  background-image: url("resources/img/bg_img.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
