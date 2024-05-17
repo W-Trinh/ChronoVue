@@ -28,7 +28,7 @@ export async function getCountries(){
         result[country.label.value] = await getHistoricalEventFromCountry(country.idcountry.value, country.label.value)
     }
 
-    console.log(result)
+    return(result)
 }
 
 export async function getHistoricalEventFromCountry(country, countryName){
