@@ -1,5 +1,9 @@
 import EventCard from '../components/EventCard';
+import * as sparql from '../services/Sparql';
+import * as dataTreatment from '../services/dataTreatment';
 
+const event = await sparql.getCountries();
+console.log(dataTreatment.getElementsAleatoire(event));
 
 function HomePage() {
     return (
@@ -15,7 +19,7 @@ function HomePage() {
             </div>
             <div className="flex w-1/3 justify-center items-center">
                 <div className="w-1/4">
-                    <button class="button-27" role="button">Roll</button>
+                    <button className="button-27" role="button">Roll</button>
                 </div>
             </div>
             

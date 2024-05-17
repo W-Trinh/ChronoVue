@@ -36,7 +36,7 @@ export async function getHistoricalEventFromCountry(country, countryName){
     const wallahi = await queryWikidata(
         'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
         'PREFIX wd:<http://www.wikidata.org/entity/>'+
-        'SELECT ?event ?label ?themeLabel ?start ?end ?freebase WHERE {'+
+        'SELECT ?event ?label ?themeLabel ?start ?end ?freebase ?image WHERE {'+
           '?event wdt:P31/wdt:P279* wd:Q13418847.'+
           '?event rdfs:label ?label;'+
             'wdt:P17 <' + country + '>;'+
@@ -45,6 +45,7 @@ export async function getHistoricalEventFromCountry(country, countryName){
           '?theme rdfs:label ?themeLabel.'+
           '?event wdt:P580 ?start.'+
           '?event wdt:P582 ?end.'+
+          '?event wdt:P18 ?image.'+
           'FILTER((LANG(?themeLabel)) = \"en\")'+
           'FILTER((LANG(?label)) = \"en\")}'
     )
@@ -57,6 +58,7 @@ export async function getHistoricalEventFromCountry(country, countryName){
                 'end':event.end.value,
                 'theme': [event.themeLabel.value],
                 'abstract': abstract,
+                'image': event.image.value,
             }
         } else {
             result[event.label.value]['theme'].push(event.themeLabel.value)
