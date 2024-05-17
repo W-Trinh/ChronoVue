@@ -17,7 +17,7 @@ function ContentPage() {
       <div className='col-span-2 row-span-8 pr-8 pl-8'>
         <SidePanel head="Événements antérieurs" content={contenu}/>
       </div>
-      <div className='col-start-3 row-span-1 col-span-6 text-center font-bold text-3xl text-center pt-4'><h1 className='text-white'>ChronoVue ça déchire</h1></div>
+      <div className='col-start-3 row-span-1 col-span-6 text-center font-bold text-3xl text-center pt-4'><h1 className='text-white'><a href="/">ChronoVue ça déchire</a></h1></div>
       <div class="row-start-2 col-start-3 row-span-7 col-span-6 overflow-hidden">   
         <ContentPanel/>  
       </div>
