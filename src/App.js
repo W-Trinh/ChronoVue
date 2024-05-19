@@ -9,7 +9,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/content" element={<ContentPage />} />
+        <Route path="/content" element={<ContentPage />} 
+        />
       </Routes>
     </Router>
   );
