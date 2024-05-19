@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../resources/img/logo.svg';
 
 function ContentPanel({title,content,image}) {
   return (
