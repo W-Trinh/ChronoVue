@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from '../resources/img/logo.svg';
 
-function ContentPanel({content}) {
+function ContentPanel({title,content,image}) {
   return (
     <div className="bg-orange-950 bg-opacity-55 text-white p-4 border-2 border-solid rounded h-full overflow-auto">
       <div className="grid grid-cols-3 grid-rows-10 gap-4 h-full">
         <div className="col-span-2 row-span-1">
-          <h1 className="font-bold text-3xl text-center">Hello la team</h1>
+          <h1 className="font-bold text-3xl text-center">{title}</h1>
         </div>
         <div className="col-span-2 row-span-9 overflow-auto p-4">
           <div className="mt-4">
@@ -15,8 +15,8 @@ function ContentPanel({content}) {
             </p>
           </div>
         </div>
-        <div className="flex justify-center row-span-10 items-center h-full">
-          <img src={logo} alt="Logo" className="w-full h-auto max-h-full"/>
+        <div className="row-span-9 h-full">
+          <img src={image} alt="Logo" className="object-cover  w-full h-full"/>
         </div>
       </div>
     </div>
