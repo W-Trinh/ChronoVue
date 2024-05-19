@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import EventCard from '../components/EventCard';
-import * as sparql from '../services/Sparql';
+import { fetchSparqlData } from '../services/sparqlSlice';
 import * as dataTreatment from '../services/dataTreatment';
 import '../App.css'; 
 
-function HomePage({ events }) { // Assurez-vous de bien déstructurer les props ici
+function HomePage() {
+    const dispatch = useDispatch();
+    const sparqlData = useSelector((state) => state.sparql.data);
+    const loading = useSelector((state) => state.sparql.loading);
+    const error = useSelector((state) => state.sparql.error);
+
     const [allEvents, setAllEvents] = useState([]);
     const [randEvents, setRandEvents] = useState({});
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchEvents() {
-            try {
-                if (!events || Object.keys(events).length === 0) {
-                    const event = await sparql.getCountries();
-                    const processedEvents = dataTreatment.reorganizeData(event);
-                    setAllEvents(processedEvents);
-                    setRandEvents(dataTreatment.getRandomHistoricalEvents(processedEvents));
-                } else {
-                    setAllEvents(events);
-                    setRandEvents(dataTreatment.getRandomHistoricalEvents(events));
-                }
-            } catch (error) {
-                console.error("Error fetching events:", error);
-            } finally {
-                setLoading(false);
-            }
+        if (!sparqlData) {
+            dispatch(fetchSparqlData());
         }
+    }, [dispatch, sparqlData]);
 
-        fetchEvents();
-    }, [events]);
+    useEffect(() => {
+        if (sparqlData) {
+            const processedEvents = dataTreatment.reorganizeData(sparqlData);
+            setAllEvents(processedEvents);
+            setRandEvents(dataTreatment.getRandomHistoricalEvents(processedEvents));
+        }
+    }, [sparqlData]);
 
     const handleRollClick = () => {
         setRandEvents(dataTreatment.getRandomHistoricalEvents(allEvents));
@@ -38,6 +35,10 @@ function HomePage({ events }) { // Assurez-vous de bien déstructurer les props 
 
     if (loading) {
         return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
     }
 
     const eventKeys = Object.keys(randEvents);
