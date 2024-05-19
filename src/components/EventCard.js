@@ -1,15 +1,15 @@
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-function EventCard({ eventkey, event, allEvents }) {
+function EventCard({ eventkey, event }) {
     const navigate = useNavigate();
+    const allEvents = useSelector((state) => state.sparql.data);
 
     const handleClick = () => {
         navigate('/content', {
-            state: { eventkey, event, allEvents }
+            state: { eventkey, event }
         });
     };
-
-    console.log("allEvents:", allEvents);
 
     return (
         <div onClick={handleClick} className="flex flex-col items-center bg-orange-950 opacity-55 border border-gray-200 rounded-lg shadow md:flex-row hover:opacity-100 hover:bg-opacity-55 w-full h-full overflow-hidden cursor-pointer">

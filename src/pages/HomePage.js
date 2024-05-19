@@ -23,7 +23,7 @@ function HomePage() {
 
     useEffect(() => {
         if (sparqlData) {
-            const processedEvents = dataTreatment.reorganizeData(sparqlData);
+            const processedEvents = sparqlData;
             setAllEvents(processedEvents);
             setRandEvents(dataTreatment.getRandomHistoricalEvents(processedEvents));
         }
@@ -31,6 +31,7 @@ function HomePage() {
 
     const handleRollClick = () => {
         setRandEvents(dataTreatment.getRandomHistoricalEvents(allEvents));
+        console.log(randEvents);
     };
 
     if (loading) {
@@ -51,7 +52,6 @@ function HomePage() {
                             <EventCard 
                                 eventkey={eventKeys[0]}
                                 event={randEvents[eventKeys[0]]}
-                                allEvents={allEvents}
                             />
                         </div>
                     </CSSTransition>
@@ -66,7 +66,6 @@ function HomePage() {
                                 <EventCard 
                                     eventkey={eventKeys[1]}
                                     event={randEvents[eventKeys[1]]}
-                                    allEvents={allEvents}
                                 />
                             </div>
                         </CSSTransition>
@@ -88,7 +87,6 @@ function HomePage() {
                                 <EventCard 
                                     eventkey={eventKeys[2]}
                                     event={randEvents[eventKeys[2]]}
-                                    allEvents={allEvents}
                                 />
                             </div>
                         </CSSTransition>
@@ -103,7 +101,6 @@ function HomePage() {
                             <EventCard 
                                 eventkey={eventKeys[3]}
                                 event={randEvents[eventKeys[3]]}
-                                allEvents={allEvents}
                             />
                         </div>
                     </CSSTransition>
