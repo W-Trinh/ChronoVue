@@ -31,7 +31,6 @@ function HomePage() {
 
     const handleRollClick = () => {
         setRandEvents(dataTreatment.getRandomHistoricalEvents(allEvents));
-        console.log(randEvents);
     };
 
     if (loading) {

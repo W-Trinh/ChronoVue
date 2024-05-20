@@ -9,10 +9,6 @@ import HomePage from './HomePage';
     const location = useLocation();
     const { eventkey, event, allEvents } = location.state;
 
-    console.log("eventkey:", eventkey);
-    console.log("event:", event["abstract"]);
-    console.log("allEvents:", allEvents);
-
     return (
       <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen p-8">
         <div className='col-span-2 row-span-8 pr-8 pl-8'>
