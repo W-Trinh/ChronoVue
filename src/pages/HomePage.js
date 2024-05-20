@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import EventCard from '../components/EventCard';
-import * as sparql from '../services/Sparql';
+import { fetchSparqlData } from '../services/sparqlSlice';
 import * as dataTreatment from '../services/dataTreatment';
 import '../App.css'; 
 
 function HomePage() {
+    const dispatch = useDispatch();
+    const sparqlData = useSelector((state) => state.sparql.data);
+    const loading = useSelector((state) => state.sparql.loading);
+    const error = useSelector((state) => state.sparql.error);
+
     const [allEvents, setAllEvents] = useState([]);
     const [randEvents, setRandEvents] = useState({});
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchEvents() {
-            const event = await sparql.getCountries();
-            setAllEvents(event);
-            setRandEvents(dataTreatment.getRandomHistoricalEvents(event));
-            setLoading(false);
+        if (!sparqlData) {
+            dispatch(fetchSparqlData());
         }
+    }, [dispatch, sparqlData]);
 
-        fetchEvents();
-    }, []);
+    useEffect(() => {
+        if (sparqlData) {
+            const processedEvents = sparqlData;
+            setAllEvents(processedEvents);
+            setRandEvents(dataTreatment.getRandomHistoricalEvents(processedEvents));
+        }
+    }, [sparqlData]);
 
     const handleRollClick = () => {
         setRandEvents(dataTreatment.getRandomHistoricalEvents(allEvents));
@@ -29,8 +37,11 @@ function HomePage() {
         return <div>Loading...</div>;
     }
 
-    const eventKeys = Object.keys(randEvents);
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
+    const eventKeys = Object.keys(randEvents);
     return (
         <div className="flex flex-col bgImage h-screen w-screen items-center">
             <TransitionGroup className="size-1/3 p-4">
@@ -38,9 +49,8 @@ function HomePage() {
                     <CSSTransition key={eventKeys[0]} timeout={500} classNames="fade">
                         <div className="h-full w-full">
                             <EventCard 
-                                title={eventKeys[0]} 
-                                content={randEvents[eventKeys[0]].abstract} 
-                                image={randEvents[eventKeys[0]].image}
+                                eventkey={eventKeys[0]}
+                                event={randEvents[eventKeys[0]]}
                             />
                         </div>
                     </CSSTransition>
@@ -53,9 +63,8 @@ function HomePage() {
                         <CSSTransition key={eventKeys[1]} timeout={500} classNames="fade">
                             <div className="h-full w-full">
                                 <EventCard 
-                                    title={eventKeys[1]} 
-                                    content={randEvents[eventKeys[1]].abstract} 
-                                    image={randEvents[eventKeys[1]].image}
+                                    eventkey={eventKeys[1]}
+                                    event={randEvents[eventKeys[1]]}
                                 />
                             </div>
                         </CSSTransition>
@@ -75,9 +84,8 @@ function HomePage() {
                         <CSSTransition key={eventKeys[2]} timeout={500} classNames="fade">
                             <div className="h-full w-full">
                                 <EventCard 
-                                    title={eventKeys[2]} 
-                                    content={randEvents[eventKeys[2]].abstract} 
-                                    image={randEvents[eventKeys[2]].image}
+                                    eventkey={eventKeys[2]}
+                                    event={randEvents[eventKeys[2]]}
                                 />
                             </div>
                         </CSSTransition>
@@ -90,9 +98,8 @@ function HomePage() {
                     <CSSTransition key={eventKeys[3]} timeout={500} classNames="fade">
                         <div className="h-full w-full">
                             <EventCard 
-                                title={eventKeys[3]} 
-                                content={randEvents[eventKeys[3]].abstract} 
-                                image={randEvents[eventKeys[3]].image}
+                                eventkey={eventKeys[3]}
+                                event={randEvents[eventKeys[3]]}
                             />
                         </div>
                     </CSSTransition>

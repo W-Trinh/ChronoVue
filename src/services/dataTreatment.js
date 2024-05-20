@@ -1,33 +1,45 @@
-export function getRandomHistoricalEvents(data) {
-    let allEvents = [];
-    
-    // Parcourir tous les pays
-    for (let country in data) {
-        if (data.hasOwnProperty(country)) {
-            // Parcourir tous les événements historiques du pays
-            for (let event in data[country]) {
-                if (data[country].hasOwnProperty(event)) {
-                    // Ajouter l'événement à la liste des événements avec la clé
-                    allEvents.push({ key: event, details: data[country][event] });
-                }
-            }
+export function getRandomHistoricalEvents(dictionary) {
+    let keys = Object.keys(dictionary);
+
+    if (keys.length < 4) {
+        throw new Error("The dictionary must have at least four elements.");
+    }
+
+    let randomIndices = [];
+    while (randomIndices.length < 4) {
+        let index = Math.floor(Math.random() * keys.length);
+        if (!randomIndices.includes(index)) {
+            randomIndices.push(index);
         }
     }
 
-    // Mélanger la liste des événements
-    for (let i = allEvents.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [allEvents[i], allEvents[j]] = [allEvents[j], allEvents[i]];
-    }
-
-    // Sélectionner les quatre premiers événements (ou moins s'il y en a moins de quatre)
-    let selectedEvents = allEvents.slice(0, 4);
-
-    // Construire le dictionnaire des événements sélectionnés
-    let result = {};
-    selectedEvents.forEach(event => {
-        result[event.key] = event.details;
+    let randomElements = {};
+    randomIndices.forEach(index => {
+        let key = keys[index];
+        randomElements[key] = dictionary[key];
     });
 
-    return result;
+    return randomElements;
+}
+
+export function reorganizeData(data) {
+    let nouveauDictionnaire = {};
+    
+    // Parcourir chaque pays dans le dictionnaire donné
+    for (let country in data) {
+        // Parcourir chaque bataille dans le pays actuel
+        for (let event in data[country]) {
+            // Créer une nouvelle clé pour la bataille dans le nouveau dictionnaire
+            if (!nouveauDictionnaire[event]) {
+                nouveauDictionnaire[event] = {};
+            }
+            // Ajouter les données de la bataille
+            nouveauDictionnaire[event] = {
+                ...data[country][event],
+                "country": country // Ajouter le nom du pays
+            };
+        }
+    }
+    
+    return nouveauDictionnaire;
 }
