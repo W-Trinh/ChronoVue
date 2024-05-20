@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getCountries } from '../services/Sparql'; // Import de ta fonction de requête
+import { getCountries } from '../services/Sparql'; 
 import { reorganizeData } from '../services/dataTreatment';
 
-// Créer un thunk pour effectuer la requête SPARQL
 export const fetchSparqlData = createAsyncThunk('sparql/fetchSparqlData', async () => {
-    const data = reorganizeData(await getCountries()); // Appel de ta fonction getCountries
+    const data = reorganizeData(await getCountries());
     return data;
 });
 
