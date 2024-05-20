@@ -1,7 +1,8 @@
 import ContentPanel from '../components/ContentPanel';
-import SidePanel from '../components/SidePanel';
 import { useLocation  } from 'react-router-dom';
 import EventCard from '../components/EventCard';
+import { useSelector } from 'react-redux';
+
 
   function ContentPage() {
 

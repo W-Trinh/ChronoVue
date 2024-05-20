@@ -5,6 +5,7 @@ import EventCard from '../components/EventCard';
 import { fetchSparqlData } from '../services/sparqlSlice';
 import * as dataTreatment from '../services/dataTreatment';
 import '../App.css'; 
+import LoadingPage from './LoadingPage';
 
 function HomePage() {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function HomePage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LoadingPage/>;
     }
 
     if (error) {
