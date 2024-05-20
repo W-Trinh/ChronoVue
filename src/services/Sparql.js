@@ -36,7 +36,7 @@ export async function getCountries(){
     );
 
     for (const country of wallahi){
-        result[country.label.value] = {id : country.idcountry.value}
+        result[country.label.value] = await getHistoricalEventFromCountry(country.idcountry.value)
     }
     console.log(result)
     return(result)
@@ -59,8 +59,7 @@ export async function getHistoricalEventFromCountry(country){
             'schema:description ?desc;'+
             'wdt:P580 ?start;'+
             'wdt:P582 ?end.'+
-          'FILTER((LANG(?label)) = \"en\")}' +
-          'LIMIT 1'
+          'FILTER((LANG(?label)) = \"en\")}'
     )
 
     for (const event of wallahi){
@@ -141,4 +140,9 @@ export async function getAbstractOfEvent(freebaseId){
     } else {
         return("No information found")
     }
+}
+
+async function getEventFromRandomCountry(){
+    const countries = getCountries()
+
 }

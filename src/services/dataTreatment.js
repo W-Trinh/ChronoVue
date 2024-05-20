@@ -24,7 +24,6 @@ export function getRandomHistoricalEvents(dictionary) {
 
 export function reorganizeData(data) {
     let nouveauDictionnaire = {};
-    
     // Parcourir chaque pays dans le dictionnaire donné
     for (let country in data) {
         // Parcourir chaque bataille dans le pays actuel
