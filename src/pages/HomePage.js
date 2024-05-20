@@ -26,6 +26,7 @@ function HomePage() {
             const processedEvents = sparqlData;
             setAllEvents(processedEvents);
             setRandEvents(dataTreatment.getRandomHistoricalEvents(processedEvents));
+            console.log(processedEvents)
         }
     }, [sparqlData]);
 
