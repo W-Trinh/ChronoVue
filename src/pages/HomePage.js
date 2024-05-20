@@ -71,7 +71,7 @@ function HomePage() {
                     )}
                 </TransitionGroup>
                 
-                <div className="flex w-1/3 justify-center items-center">
+                <div className="flex w-1/3 justify-center items-center ">
                     <div className="w-1/4">
                         <button className="button-27" role="button" onClick={handleRollClick}>
                             Roll

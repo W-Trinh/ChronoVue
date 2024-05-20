@@ -92,6 +92,7 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  justify-content: center;
   width: 100%;
   will-change: transform;
 }
