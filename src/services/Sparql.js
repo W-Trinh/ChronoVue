@@ -88,32 +88,31 @@ export async function getHistoricalEventFromCountry(country, date, when){
     Should be used in the content page to display informations
     @param event : The ID of the event inside the Wikidata Database
 */
-export async function getInfoOfEvent(event){
+export async function getInfoOfEvent(eventArg){
     let result = {}
     const wallahi = await queryWikidata(
         'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
         'PREFIX wd:<http://www.wikidata.org/entity/>'+
         'SELECT DISTINCT ?label ?start ?end ?freebase ?image ?themeLabel ?desc WHERE {'+
-            '<' + event + '> rdfs:label ?label;'+
+            '<' + eventArg + '> rdfs:label ?label;'+
             'schema:description ?desc;'+
             'wdt:P31 ?theme;'+
             'wdt:P18 ?image;'+
             'wdt:P580 ?start;'+
             'wdt:P582 ?end.'+
-          'OPTIONAL {<' + event + '>  wdt:P646 ?freebase}'+
+          'OPTIONAL {<' + eventArg + '>  wdt:P646 ?freebase}'+
           '?theme rdfs:label ?themeLabel.'+
           'FILTER((LANG(?desc)) = \"en\")'+
           'FILTER((LANG(?themeLabel)) = \"en\")'+
           'FILTER((LANG(?label)) = \"en\")}'
     )
-    console.log(wallahi)
     for (const event of wallahi){
         
         if (typeof(result[event.label.value]) === 'undefined'){
 
             let abstract = "undefined"
             if (typeof(event.freebase) !== 'undefined'){
-                abstract = await getAbstractOfEvent(event.freebase.value)
+                abstract = await getAbstractOfEvent(eventArg)
             } else {
                 abstract = event.desc.value
             }
@@ -136,17 +135,19 @@ export async function getInfoOfEvent(event){
 /*
     Get the abstract of an event from Dbpedia
     Used to link Dbpedia and Wikidata
-    @param freebaseId : The ID of the event inside the Freebase ID.
+    @param Event : The event inside the Wikidata
 */
-export async function getAbstractOfEvent(freebaseId){
+export async function getAbstractOfEvent(event){
+    console.log(event)
     const wallahi = await queryDbpedia(
         'PREFIX dbo: <http://dbpedia.org/ontology/>'+
         'SELECT ?abstract WHERE {'+
-        '?o owl:sameAs <http://rdf.freebase.com/ns/m.'+freebaseId.substring(3)+'>;'+
+        '?o owl:sameAs <'+event+'>;'+
             'dbo:abstract ?abstract.'+
         'FILTER((LANG(?abstract )) = \"en\")'+
         '}'
     )
+    console.log(wallahi)
     if(wallahi.length>0){
         return(wallahi[0].abstract.value)
     } else {
