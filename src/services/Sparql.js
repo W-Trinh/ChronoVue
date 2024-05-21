@@ -47,7 +47,14 @@ export async function getCountries(){
     Should be used in the home and content page 
     @param country : The ID of the country inside the Wikidata Database
 */
-export async function getHistoricalEventFromCountry(country){
+export async function getHistoricalEventFromCountry(country, date, when){
+    let filterDate = ""
+    if (when==="before"){
+        filterDate = "FILTER (?start > \""+ date +"\"^^xsd:dateTime)"
+    } else if (when==="after"){
+        filterDate = "FILTER (?end < \""+ date +"\"^^xsd:dateTime)"
+    }
+
     let result = {}
     const wallahi = await queryWikidata(
         'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
@@ -60,6 +67,7 @@ export async function getHistoricalEventFromCountry(country){
             'wdt:P580 ?start;'+
             'wdt:P582 ?end;'+
             'wdt:P18 ?image.'+
+            filterDate +
           'FILTER((LANG(?desc)) = \"en\")'+  
           'FILTER((LANG(?label)) = \"en\")}'
     )
