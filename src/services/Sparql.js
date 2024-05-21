@@ -1,4 +1,4 @@
-require('sparqljs')
+const language = "en"
 
 /*
     Function used to query Wikidata API
@@ -32,7 +32,7 @@ export async function getCountries(){
         '{?idcountry wdt:P31 wd:Q6256.'+
         '?idcountry wdt:P361 wd:Q458.'+
         '?idcountry rdfs:label ?label.'+
-        'FILTER((LANG(?label)) = \"en\")}'
+        'FILTER((LANG(?label)) = \"'+language+'\")}'
     );
 
     for (const country of wallahi){
@@ -67,8 +67,8 @@ export async function getHistoricalEventFromCountry(country, date, when){
             'wdt:P582 ?end;'+
             'wdt:P18 ?image.'+
             filterDate +
-          'FILTER((LANG(?desc)) = \"en\")'+  
-          'FILTER((LANG(?label)) = \"en\")}'
+          'FILTER((LANG(?desc)) = \"'+language+'\")'+  
+          'FILTER((LANG(?label)) = \"'+language+'\")}'
     )
 
     for (const event of wallahi){
@@ -80,6 +80,7 @@ export async function getHistoricalEventFromCountry(country, date, when){
             image: event.image.value,
         }
     }
+    console.log(result)
     return result
 }
 
@@ -102,9 +103,9 @@ export async function getInfoOfEvent(eventArg){
             'wdt:P582 ?end.'+
           'OPTIONAL {<' + eventArg + '>  wdt:P646 ?freebase}'+
           '?theme rdfs:label ?themeLabel.'+
-          'FILTER((LANG(?desc)) = \"en\")'+
-          'FILTER((LANG(?themeLabel)) = \"en\")'+
-          'FILTER((LANG(?label)) = \"en\")}'
+          'FILTER((LANG(?desc)) = \"'+language+'\")'+
+          'FILTER((LANG(?themeLabel)) = \"'+language+'\")'+
+          'FILTER((LANG(?label)) = \"'+language+'\")}'
     )
     for (const event of wallahi){
         
@@ -144,7 +145,7 @@ export async function getAbstractOfEvent(event){
         'SELECT ?abstract WHERE {'+
         '?o owl:sameAs <'+event+'>;'+
             'dbo:abstract ?abstract.'+
-        'FILTER((LANG(?abstract )) = \"en\")'+
+        'FILTER((LANG(?abstract )) = \"'+language+'\")'+
         '}'
     )
     console.log(wallahi)
@@ -168,8 +169,8 @@ export async function getHistoricalEvent(country){
             'wdt:P580 ?start;'+
             'wdt:P582 ?end;'+
             'wdt:P18 ?image.'+
-          'FILTER((LANG(?desc)) = \"en\")'+  
-          'FILTER((LANG(?label)) = \"en\")}'
+          'FILTER((LANG(?desc)) = \"'+language+'\")'+  
+          'FILTER((LANG(?label)) = \"'+language+'\")}'
     )
 
     for (const event of wallahi){
