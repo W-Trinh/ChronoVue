@@ -38,7 +38,6 @@ export async function getCountries(){
     for (const country of wallahi){
         result[country.label.value] = await getHistoricalEventFromCountry(country.idcountry.value)
     }
-    console.log(result)
     return(result)
 }
 
@@ -103,6 +102,7 @@ export async function getInfoOfEvent(event){
             'wdt:P582 ?end.'+
           'OPTIONAL {<' + event + '>  wdt:P646 ?freebase}'+
           '?theme rdfs:label ?themeLabel.'+
+          'FILTER((LANG(?desc)) = \"en\")'+
           'FILTER((LANG(?themeLabel)) = \"en\")'+
           'FILTER((LANG(?label)) = \"en\")}'
     )
