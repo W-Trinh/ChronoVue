@@ -155,32 +155,3 @@ export async function getAbstractOfEvent(event){
         return("No information found")
     }
 }
-
-export async function getHistoricalEvent(country){
-    let result = {}
-    const wallahi = await queryWikidata(
-        'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
-        'PREFIX wd:<http://www.wikidata.org/entity/>'+
-        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {'+
-          '?event wdt:P31/wdt:P279* wd:Q13418847.'+
-          '?event rdfs:label ?label;'+
-            'wdt:P17 <' + country + '>;'+
-            'schema:description ?desc;'+
-            'wdt:P580 ?start;'+
-            'wdt:P582 ?end;'+
-            'wdt:P18 ?image.'+
-          'FILTER((LANG(?desc)) = \"'+language+'\")'+  
-          'FILTER((LANG(?label)) = \"'+language+'\")}'
-    )
-
-    for (const event of wallahi){
-        result[event.label.value] = {
-            id: event.event.value,
-            start: event.start.value,
-            end: event.end.value,
-            abstract: event.desc.value,
-            image: event.image.value,
-        }
-    }
-    return result
-}
