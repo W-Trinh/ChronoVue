@@ -2,12 +2,11 @@ import BottomPanel from '../components/BottomPanel';
 import ContentPanel from '../components/ContentPanel';
 import SidePanel from '../components/SidePanel';
 import { useLocation  } from 'react-router-dom';
-import HomePage from './HomePage';
 
   function ContentPage() {
-
     const location = useLocation();
     const { eventkey, event, allEvents } = location.state;
+
 
     return (
       <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen p-8">
