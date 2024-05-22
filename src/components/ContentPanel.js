@@ -1,4 +1,6 @@
 function ContentPanel({title,event}) {
+  console.log(title)
+  console.log(event)
   return (
     <div className="bg-orange-950 bg-opacity-55 text-white p-4 border-2 border-solid rounded h-full overflow-auto">
       <div className="grid grid-cols-3 grid-rows-10 gap-4 h-full">
@@ -8,7 +10,7 @@ function ContentPanel({title,event}) {
         <div className="col-span-2 row-span-9 overflow-auto p-4 flex items-center">
           <div className="mt-4">
             <p className="text-clip">
-              {event[title].abstract}              
+              {event[title].abstract}
             </p>
           </div>
         </div>

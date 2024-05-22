@@ -117,19 +117,11 @@ export async function getInfoOfEvent(eventArg){
     for (const event of wallahi){
 
         if (typeof(result[event.label.value]) === 'undefined'){
-
-            let abstract = "undefined"
-            if (typeof(event.freebase) !== 'undefined'){
-                abstract = await getAbstractOfEvent(eventArg)
-            } else {
-                abstract = event.desc.value
-            }
-
             result[event.label.value] = {
                 start:event.start.value,
                 end:event.end.value,
                 theme: [event.themeLabel.value],
-                abstract: abstract,
+                abstract: await getAbstractOfEvent(eventArg),
                 image: event.image.value,
                 countryId: event.country.value,
                 countryName: event.countryLabel.value,
