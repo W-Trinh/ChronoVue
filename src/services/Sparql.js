@@ -51,10 +51,10 @@ export async function getHistoricalEventFromCountry(country, date, when){
     let orderBy = ""
     if (when==="before"){
         filterDate = "FILTER (?start < \""+ date +"\"^^xsd:dateTime)"
-        orderBy = "ORDER BY DESC(?end)"
+        orderBy = "ORDER BY DESC(?end) LIMIT 3"
     } else if (when==="after"){
         filterDate = "FILTER (?end > \""+ date +"\"^^xsd:dateTime)"
-        orderBy = "ORDER BY ASC(?start)"
+        orderBy = "ORDER BY ASC(?start) LIMIT 3"
     }
 
     let result = {}
@@ -82,6 +82,7 @@ export async function getHistoricalEventFromCountry(country, date, when){
             end: event.end.value,
             abstract: event.desc.value,
             image: event.image.value,
+            title: event.label.value,
         }
     }
 

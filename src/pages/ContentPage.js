@@ -28,18 +28,20 @@ function ContentPage() {
   if (Object.keys(data).length === 0) {
     return <LoadingPage/>;
   } else {
+    const eventKeysBefore = Object.keys(evtBefore);
+    const eventKeysAfter = Object.keys(evtAfter);
     return (
       <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen">
         <div className='flex col-span-2 row-span-10 pr-8 pl-8'>
           <div className='flex justify-center flex-col space-y-10 w-full h-full w-2/8'>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysBefore[0]} event={evtBefore[eventKeysBefore[0]]} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysBefore[1]} event={evtBefore[eventKeysBefore[1]]} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysBefore[2]} event={evtBefore[eventKeysBefore[2]]} />
             </div>
           </div>
         </div>
@@ -59,13 +61,13 @@ function ContentPage() {
         <div className='flex col-start-9 col-span-2 row-span-10 pr-8 pl-8'>
           <div className='flex justify-center flex-col space-y-10 w-full h-full w-2/8'>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysAfter[0]} event={evtAfter[eventKeysAfter[0]]} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysAfter[1]} event={evtAfter[eventKeysAfter[1]]} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysAfter[2]} event={evtAfter[eventKeysAfter[2]]} />
             </div>
           </div>
         </div>
