@@ -15,13 +15,11 @@ function ContentPage() {
   
   useEffect(() => {
 
-    console.log("JSUIS DEDANS")
     const fetchData = async () => {
       setLoading(true)
       const result = await getInfoOfEvent(event[eventkey].id);
       const resultBefore = await getHistoricalEventFromCountry(event[eventkey].countryId, result[eventkey].start, "before");
       const resultAfter = await getHistoricalEventFromCountry(event[eventkey].countryId, result[eventkey].end, "after");
-      console.log(result)
 
       setEvtBefore(resultBefore);
       setEvtAfter(resultAfter);

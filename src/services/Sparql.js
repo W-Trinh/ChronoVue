@@ -51,9 +51,9 @@ export async function getHistoricalEventFromCountry(country, date, when){
     let orderBy = ""
     if (when === "before") {
         filterDate = `FILTER (?start < "${date}"^^xsd:dateTime)`
-        orderBy = "ORDER BY DESC(?end) LIMIT 3"
+        orderBy = "ORDER BY DESC(?start) LIMIT 3"
     } else if (when === "after") {
-        filterDate = `FILTER (?end > "${date}"^^xsd:dateTime)`
+        filterDate = `FILTER (?start > "${date}"^^xsd:dateTime)`
         orderBy = "ORDER BY ASC(?start) LIMIT 3"
     }
 
@@ -62,7 +62,7 @@ export async function getHistoricalEventFromCountry(country, date, when){
         'PREFIX wdt: <http://www.wikidata.org/prop/direct/>' +
         'PREFIX wd: <http://www.wikidata.org/entity/>' +
         'PREFIX schema: <http://schema.org/>' +
-        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {' +
+        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image ?countryLabel WHERE {' +
             '?event wdt:P31/wdt:P279* wd:Q13418847.' +
             '?event rdfs:label ?label;' +
             'wdt:P17 <' + country + '>;'+
@@ -70,9 +70,11 @@ export async function getHistoricalEventFromCountry(country, date, when){
             'wdt:P580 ?start;' +
             'wdt:P582 ?end;' +
             'wdt:P18 ?image.' +
+            '<' + country + '> rdfs:label ?countryLabel.' +
             filterDate +
             `FILTER (LANG(?desc) = "${language}")` +
             `FILTER (LANG(?label) = "${language}")` +
+            `FILTER (LANG(?countryLabel) = "${language}")` +
         '}' + 
         orderBy
     )
@@ -83,6 +85,7 @@ export async function getHistoricalEventFromCountry(country, date, when){
             start: event.start.value,
             end: event.end.value,
             abstract: event.desc.value,
+            countryLabel: event.countryLabel.value,
             image: event.image.value,
             title: event.label.value,
             countryId: country,
