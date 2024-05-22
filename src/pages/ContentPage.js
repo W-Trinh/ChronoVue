@@ -4,6 +4,7 @@ import EventCard from '../components/EventCard';
 import React, { useState, useEffect } from 'react';
 import { getInfoOfEvent, getHistoricalEventFromCountry } from '../services/Sparql';
 import LoadingPage from './LoadingPage';
+import * as dataTreatment from '../services/dataTreatment';
 
 function ContentPage() {
   const location = useLocation();
@@ -14,13 +15,13 @@ function ContentPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getInfoOfEvent(event["id"])
-      const resultBefore = await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].start, "before")
-      const resultAfter = await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].end, "after")
+      const result = await getInfoOfEvent(event[eventkey]["id"]);
+      const resultBefore = dataTreatment.addDictEntry(await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].start, "before"));
+      const resultAfter = dataTreatment.addDictEntry(await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].end, "after"));
 
-      setEvtBefore(resultBefore)
-      setEvtAfter(resultAfter)
-      setData(result)
+      setEvtBefore(resultBefore);
+      setEvtAfter(resultAfter);
+      setData(result);
     };
     fetchData();
   }, []);
@@ -30,18 +31,21 @@ function ContentPage() {
   } else {
     const eventKeysBefore = Object.keys(evtBefore);
     const eventKeysAfter = Object.keys(evtAfter);
+
+console.log("id:", eventKeysBefore[0], "catalog: ", evtBefore)
+
     return (
       <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen">
         <div className='flex col-span-2 row-span-10 pr-8 pl-8'>
           <div className='flex justify-center flex-col space-y-10 w-full h-full w-2/8'>
             <div className='h-1/4'>
-              <EventCard eventkey={eventKeysBefore[0]} event={evtBefore[eventKeysBefore[0]]} />
+              <EventCard eventkey={eventKeysBefore[0]} event={evtBefore} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventKeysBefore[1]} event={evtBefore[eventKeysBefore[1]]} />
+              <EventCard eventkey={eventKeysBefore[1]} event={evtBefore} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventKeysBefore[2]} event={evtBefore[eventKeysBefore[2]]} />
+              <EventCard eventkey={eventKeysBefore[2]} event={evtBefore} />
             </div>
           </div>
         </div>
@@ -61,13 +65,13 @@ function ContentPage() {
         <div className='flex col-start-9 col-span-2 row-span-10 pr-8 pl-8'>
           <div className='flex justify-center flex-col space-y-10 w-full h-full w-2/8'>
             <div className='h-1/4'>
-              <EventCard eventkey={eventKeysAfter[0]} event={evtAfter[eventKeysAfter[0]]} />
+              <EventCard eventkey={eventKeysAfter[0]} event={evtAfter} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventKeysAfter[1]} event={evtAfter[eventKeysAfter[1]]} />
+              <EventCard eventkey={eventKeysAfter[1]} event={evtAfter} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventKeysAfter[2]} event={evtAfter[eventKeysAfter[2]]} />
+              <EventCard eventkey={eventKeysAfter[2]} event={evtAfter} />
             </div>
           </div>
         </div>

@@ -52,3 +52,16 @@ function removeEntriesWithCertainValue(dictionary, targetKey, targetValue) {
         }
     }
 }
+
+export function addDictEntry(originalDict) {
+    const reorganizedDict = {};
+
+    for (const key in originalDict) {
+        if (originalDict.hasOwnProperty(key)) {
+            reorganizedDict[key] = {};
+            reorganizedDict[key][key] = originalDict[key];
+        }
+    }
+
+    return reorganizedDict;
+}
