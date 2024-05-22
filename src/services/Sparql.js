@@ -46,36 +46,39 @@ export async function getCountries(){
     Should be used in the home and content page
     @param country : The ID of the country inside the Wikidata Database
 */
-export async function getHistoricalEventFromCountry(country, date, when){
+export async function getHistoricalEventFromCountry(country, date, when, language){
     let filterDate = ""
     let orderBy = ""
-    if (when==="before"){
-        filterDate = "FILTER (?start < \""+ date +"\"^^xsd:dateTime)"
+    if (when === "before") {
+        filterDate = `FILTER (?start < "${date}"^^xsd:dateTime)`
         orderBy = "ORDER BY DESC(?end) LIMIT 3"
-    } else if (when==="after"){
-        filterDate = "FILTER (?end > \""+ date +"\"^^xsd:dateTime)"
+    } else if (when === "after") {
+        filterDate = `FILTER (?end > "${date}"^^xsd:dateTime)`
         orderBy = "ORDER BY ASC(?start) LIMIT 3"
     }
 
     let result = {}
     const wallahi = await queryWikidata(
-        'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
-        'PREFIX wd:<http://www.wikidata.org/entity/>'+
-        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {'+
-          '?event wdt:P31/wdt:P279* wd:Q13418847.'+
-          '?event rdfs:label ?label;'+
-            'wdt:P17 <' + country + '>;'+
-            'schema:description ?desc;'+
-            'wdt:P580 ?start;'+
-            'wdt:P582 ?end;'+
-            'wdt:P18 ?image.'+
+        'PREFIX wdt: <http://www.wikidata.org/prop/direct/>' +
+        'PREFIX wd: <http://www.wikidata.org/entity/>' +
+        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
+        'PREFIX schema: <http://schema.org/>' +
+        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {' +
+            '?event wdt:P31/wdt:P279* wd:Q13418847.' +
+            '?event rdfs:label ?label;' +
+            'wdt:P17 wd:' + country + ';' +
+            'schema:description ?desc;' +
+            'wdt:P580 ?start;' +
+            'wdt:P582 ?end;' +
+            'wdt:P18 ?image.' +
             filterDate +
-          'FILTER((LANG(?desc)) = \"'+language+'\")' +
-          'FILTER((LANG(?label)) = \"'+language+'\")}'+
-          orderBy
+            `FILTER (LANG(?desc) = "${language}")` +
+            `FILTER (LANG(?label) = "${language}")` +
+        '}' + 
+        orderBy
     )
 
-    for (const event of wallahi){
+    for (const event of wallahi) {
         result[event.label.value] = {
             id: event.event.value,
             start: event.start.value,
@@ -88,6 +91,7 @@ export async function getHistoricalEventFromCountry(country, date, when){
 
     return result
 }
+
 
 /*
     Get the information of an event

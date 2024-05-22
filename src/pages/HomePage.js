@@ -44,7 +44,6 @@ function HomePage() {
 
     const eventKeys = Object.keys(randEvents);
 
-    console.log("key:", eventKeys[0], "items:", randEvents)
     return (
         <div className="flex flex-col bgImage h-screen w-screen items-center">
             <TransitionGroup className="size-1/3 p-4">
@@ -53,7 +52,7 @@ function HomePage() {
                         <div className="h-full w-full">
                             <EventCard 
                                 eventkey={eventKeys[0]}
-                                event={randEvents}
+                                event={allEvents}
                             />
                         </div>
                     </CSSTransition>
@@ -67,7 +66,7 @@ function HomePage() {
                             <div className="h-full w-full">
                                 <EventCard 
                                     eventkey={eventKeys[1]}
-                                    event={randEvents}
+                                    event={allEvents}
                                 />
                             </div>
                         </CSSTransition>
@@ -88,7 +87,7 @@ function HomePage() {
                             <div className="h-full w-full">
                                 <EventCard 
                                     eventkey={eventKeys[2]}
-                                    event={randEvents}
+                                    event={allEvents}
                                 />
                             </div>
                         </CSSTransition>
@@ -102,7 +101,7 @@ function HomePage() {
                         <div className="h-full w-full">
                             <EventCard 
                                 eventkey={eventKeys[3]}
-                                event={randEvents}
+                                event={allEvents}
                             />
                         </div>
                     </CSSTransition>

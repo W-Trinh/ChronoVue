@@ -15,7 +15,8 @@ function ContentPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getInfoOfEvent(event[eventkey]["id"]);
+      const result = await getInfoOfEvent(event[eventkey]);
+      console.log("result", result)
       const resultBefore = dataTreatment.addDictEntry(await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].start, "before"));
       const resultAfter = dataTreatment.addDictEntry(await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].end, "after"));
 
@@ -31,8 +32,6 @@ function ContentPage() {
   } else {
     const eventKeysBefore = Object.keys(evtBefore);
     const eventKeysAfter = Object.keys(evtAfter);
-
-console.log("id:", eventKeysBefore[0], "catalog: ", evtBefore)
 
     return (
       <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen">
