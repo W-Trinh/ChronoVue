@@ -49,44 +49,49 @@ export async function getCountries(){
 export async function getHistoricalEventFromCountry(country, date, when){
     let filterDate = ""
     let orderBy = ""
-    if (when==="before"){
-        filterDate = "FILTER (?start < \""+ date +"\"^^xsd:dateTime)"
-        orderBy = "ORDER BY DESC(?end)"
-    } else if (when==="after"){
-        filterDate = "FILTER (?end > \""+ date +"\"^^xsd:dateTime)"
-        orderBy = "ORDER BY ASC(?start)"
+    if (when === "before") {
+        filterDate = `FILTER (?start < "${date}"^^xsd:dateTime)`
+        orderBy = "ORDER BY DESC(?end) LIMIT 3"
+    } else if (when === "after") {
+        filterDate = `FILTER (?end > "${date}"^^xsd:dateTime)`
+        orderBy = "ORDER BY ASC(?start) LIMIT 3"
     }
 
     let result = {}
     const wallahi = await queryWikidata(
-        'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
-        'PREFIX wd:<http://www.wikidata.org/entity/>'+
-        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {'+
-          '?event wdt:P31/wdt:P279* wd:Q13418847.'+
-          '?event rdfs:label ?label;'+
+        'PREFIX wdt: <http://www.wikidata.org/prop/direct/>' +
+        'PREFIX wd: <http://www.wikidata.org/entity/>' +
+        'PREFIX schema: <http://schema.org/>' +
+        'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {' +
+            '?event wdt:P31/wdt:P279* wd:Q13418847.' +
+            '?event rdfs:label ?label;' +
             'wdt:P17 <' + country + '>;'+
-            'schema:description ?desc;'+
-            'wdt:P580 ?start;'+
-            'wdt:P582 ?end;'+
-            'wdt:P18 ?image.'+
+            'schema:description ?desc;' +
+            'wdt:P580 ?start;' +
+            'wdt:P582 ?end;' +
+            'wdt:P18 ?image.' +
             filterDate +
-          'FILTER((LANG(?desc)) = \"'+language+'\")' +
-          'FILTER((LANG(?label)) = \"'+language+'\")}'+
-          orderBy
+            `FILTER (LANG(?desc) = "${language}")` +
+            `FILTER (LANG(?label) = "${language}")` +
+        '}' + 
+        orderBy
     )
 
-    for (const event of wallahi){
+    for (const event of wallahi) {
         result[event.label.value] = {
             id: event.event.value,
             start: event.start.value,
             end: event.end.value,
             abstract: event.desc.value,
             image: event.image.value,
+            title: event.label.value,
+            countryId: country,
         }
     }
 
     return result
 }
+
 
 /*
     Get the information of an event
@@ -116,19 +121,11 @@ export async function getInfoOfEvent(eventArg){
     for (const event of wallahi){
 
         if (typeof(result[event.label.value]) === 'undefined'){
-
-            let abstract = "undefined"
-            if (typeof(event.freebase) !== 'undefined'){
-                abstract = await getAbstractOfEvent(eventArg)
-            } else {
-                abstract = event.desc.value
-            }
-
             result[event.label.value] = {
                 start:event.start.value,
                 end:event.end.value,
                 theme: [event.themeLabel.value],
-                abstract: abstract,
+                abstract: await getAbstractOfEvent(eventArg),
                 image: event.image.value,
                 countryId: event.country.value,
                 countryName: event.countryLabel.value,

@@ -1,45 +1,52 @@
 import ContentPanel from '../components/ContentPanel';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import EventCard from '../components/EventCard';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useReducer} from 'react';
 import { getInfoOfEvent, getHistoricalEventFromCountry } from '../services/Sparql';
 import LoadingPage from './LoadingPage';
 
 function ContentPage() {
-  const location = useLocation();
-  const { eventkey, event } = location.state;
   const [data, setData] = useState({});
   const [evtBefore, setEvtBefore] = useState({});
   const [evtAfter, setEvtAfter] = useState({});
-
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const { eventkey, event } = location.state;
+  
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getInfoOfEvent(event["id"])
-      const resultBefore = await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].start, "before")
-      const resultAfter = await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].end, "after")
 
-      setEvtBefore(resultBefore)
-      setEvtAfter(resultAfter)
-      setData(result)
+    console.log("JSUIS DEDANS")
+    const fetchData = async () => {
+      setLoading(true)
+      const result = await getInfoOfEvent(event[eventkey].id);
+      const resultBefore = await getHistoricalEventFromCountry(event[eventkey].countryId, result[eventkey].start, "before");
+      const resultAfter = await getHistoricalEventFromCountry(event[eventkey].countryId, result[eventkey].end, "after");
+      console.log(result)
+
+      setEvtBefore(resultBefore);
+      setEvtAfter(resultAfter);
+      setData(result);
+      setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [location]);
 
-  if (Object.keys(data).length === 0) {
-    return <LoadingPage/>;
-  } else {
+  if (eventkey in data) {
+    const eventKeysBefore = Object.keys(evtBefore);
+    const eventKeysAfter = Object.keys(evtAfter);
     return (
       <div className="relative bgImage grid grid-cols-10 grid-rows-10 h-screen">
         <div className='flex col-span-2 row-span-10 pr-8 pl-8'>
           <div className='flex justify-center flex-col space-y-10 w-full h-full w-2/8'>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysBefore[0]} event={evtBefore} />
+              <button/>
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysBefore[1]} event={evtBefore} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysBefore[2]} event={evtBefore} />
             </div>
           </div>
         </div>
@@ -59,18 +66,20 @@ function ContentPage() {
         <div className='flex col-start-9 col-span-2 row-span-10 pr-8 pl-8'>
           <div className='flex justify-center flex-col space-y-10 w-full h-full w-2/8'>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysAfter[0]} event={evtAfter} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysAfter[1]} event={evtAfter} />
             </div>
             <div className='h-1/4'>
-              <EventCard eventkey={eventkey} event={event} />
+              <EventCard eventkey={eventKeysAfter[2]} event={evtAfter} />
             </div>
           </div>
         </div>
       </div>
     );
+  } else {
+    return <LoadingPage/>;
   }
 }
 
