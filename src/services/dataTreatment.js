@@ -39,6 +39,16 @@ export function reorganizeData(data) {
             };
         }
     }
-    
+
+    removeEntriesWithCertainValue(nouveauDictionnaire, "abstract", "No information found");
+        
     return nouveauDictionnaire;
+}
+
+function removeEntriesWithCertainValue(dictionary, targetKey, targetValue) {
+    for (let key in dictionary) {
+        if (dictionary[key][targetKey] === targetValue) {
+            delete dictionary[key];
+        }
+    }
 }

@@ -5,6 +5,7 @@ import EventCard from '../components/EventCard';
 import { fetchSparqlData } from '../services/sparqlSlice';
 import * as dataTreatment from '../services/dataTreatment';
 import '../App.css'; 
+import LoadingPage from './LoadingPage';
 
 function HomePage() {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function HomePage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <LoadingPage/>;
     }
 
     if (error) {
@@ -71,7 +72,7 @@ function HomePage() {
                     )}
                 </TransitionGroup>
                 
-                <div className="flex w-1/3 justify-center items-center">
+                <div className="flex w-1/3 justify-center items-center ">
                     <div className="w-1/4">
                         <button className="button-27" role="button" onClick={handleRollClick}>
                             Roll

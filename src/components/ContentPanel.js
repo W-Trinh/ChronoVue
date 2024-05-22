@@ -5,7 +5,7 @@ function ContentPanel({title,event}) {
         <div className="col-span-2 row-span-1">
           <h1 className="font-bold text-3xl text-center">{title}</h1>
         </div>
-        <div className="col-span-2 row-span-9 overflow-auto p-4">
+        <div className="col-span-2 row-span-9 overflow-auto p-4 flex items-center">
           <div className="mt-4">
             <p className="text-clip">
               {event[title].abstract}              
