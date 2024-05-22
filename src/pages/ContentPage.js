@@ -9,7 +9,6 @@ import { set } from 'rsuite/esm/utils/dateUtils';
   function ContentPage() {
     const location = useLocation();
     const { eventkey, event, allEvents } = location.state;
-    
     const [data, setData] = useState({});
 
     useEffect(() => {
@@ -28,7 +27,7 @@ import { set } from 'rsuite/esm/utils/dateUtils';
           <div className='col-span-2 row-span-8 pr-8 pl-8'>
             <SidePanel head="Événements antérieurs" content={event["abstract"]} />
           </div>
-  
+
           <div className="flex w-1/3 justify-center items-center">
               <div className="w-1/4">
                 <a href="/">
