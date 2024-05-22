@@ -5,6 +5,7 @@ const language = "en"
     Should not be used outside of this file
 */
 async function queryWikidata(query){
+    console.log(query)
     const response = await fetch('https://query.wikidata.org/sparql?format=json&query=' + query);
     const data = await response.json();
     return data.results.bindings;
@@ -46,7 +47,7 @@ export async function getCountries(){
     Should be used in the home and content page
     @param country : The ID of the country inside the Wikidata Database
 */
-export async function getHistoricalEventFromCountry(country, date, when, language){
+export async function getHistoricalEventFromCountry(country, date, when){
     let filterDate = ""
     let orderBy = ""
     if (when === "before") {
@@ -61,12 +62,11 @@ export async function getHistoricalEventFromCountry(country, date, when, languag
     const wallahi = await queryWikidata(
         'PREFIX wdt: <http://www.wikidata.org/prop/direct/>' +
         'PREFIX wd: <http://www.wikidata.org/entity/>' +
-        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>' +
         'PREFIX schema: <http://schema.org/>' +
         'SELECT DISTINCT ?event ?start ?end ?label ?desc ?image WHERE {' +
             '?event wdt:P31/wdt:P279* wd:Q13418847.' +
             '?event rdfs:label ?label;' +
-            'wdt:P17 wd:' + country + ';' +
+            'wdt:P17 <' + country + '>;'+
             'schema:description ?desc;' +
             'wdt:P580 ?start;' +
             'wdt:P582 ?end;' +

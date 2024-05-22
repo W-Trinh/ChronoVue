@@ -15,7 +15,7 @@ function ContentPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getInfoOfEvent(event[eventkey]);
+      const result = await getInfoOfEvent(event[eventkey].id);
       console.log("result", result)
       const resultBefore = dataTreatment.addDictEntry(await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].start, "before"));
       const resultAfter = dataTreatment.addDictEntry(await getHistoricalEventFromCountry(result[eventkey].countryId, result[eventkey].end, "after"));
