@@ -43,15 +43,18 @@ export async function getCountries(){
 
 /*
     Get every event from a country
-    Should be used in the home and content page 
+    Should be used in the home and content page
     @param country : The ID of the country inside the Wikidata Database
 */
 export async function getHistoricalEventFromCountry(country, date, when){
     let filterDate = ""
+    let orderBy = ""
     if (when==="before"){
-        filterDate = "FILTER (?start > \""+ date +"\"^^xsd:dateTime)"
+        filterDate = "FILTER (?start < \""+ date +"\"^^xsd:dateTime)"
+        orderBy = "ORDER BY DESC(?end)"
     } else if (when==="after"){
-        filterDate = "FILTER (?end < \""+ date +"\"^^xsd:dateTime)"
+        filterDate = "FILTER (?end > \""+ date +"\"^^xsd:dateTime)"
+        orderBy = "ORDER BY ASC(?start)"
     }
 
     let result = {}
@@ -67,8 +70,9 @@ export async function getHistoricalEventFromCountry(country, date, when){
             'wdt:P582 ?end;'+
             'wdt:P18 ?image.'+
             filterDate +
-          'FILTER((LANG(?desc)) = \"'+language+'\")'+  
-          'FILTER((LANG(?label)) = \"'+language+'\")}'
+          'FILTER((LANG(?desc)) = \"'+language+'\")' +
+          'FILTER((LANG(?label)) = \"'+language+'\")}'+
+          orderBy
     )
 
     for (const event of wallahi){
@@ -80,12 +84,12 @@ export async function getHistoricalEventFromCountry(country, date, when){
             image: event.image.value,
         }
     }
-    console.log(result)
+
     return result
 }
 
 /*
-    Get the information of an event 
+    Get the information of an event
     Should be used in the content page to display informations
     @param event : The ID of the event inside the Wikidata Database
 */
@@ -94,21 +98,23 @@ export async function getInfoOfEvent(eventArg){
     const wallahi = await queryWikidata(
         'PREFIX wdt:<http://www.wikidata.org/prop/direct/>'+
         'PREFIX wd:<http://www.wikidata.org/entity/>'+
-        'SELECT DISTINCT ?label ?start ?end ?freebase ?image ?themeLabel ?desc WHERE {'+
+        'SELECT DISTINCT ?label ?start ?end ?country ?countryLabel ?image ?themeLabel ?desc WHERE {'+
             '<' + eventArg + '> rdfs:label ?label;'+
             'schema:description ?desc;'+
             'wdt:P31 ?theme;'+
             'wdt:P18 ?image;'+
+            'wdt:P17 ?country;' +
             'wdt:P580 ?start;'+
             'wdt:P582 ?end.'+
-          'OPTIONAL {<' + eventArg + '>  wdt:P646 ?freebase}'+
+          '?country rdfs:label ?countryLabel.' +
           '?theme rdfs:label ?themeLabel.'+
+          'FILTER((LANG(?countryLabel)) = \"'+language+'\")'+
           'FILTER((LANG(?desc)) = \"'+language+'\")'+
           'FILTER((LANG(?themeLabel)) = \"'+language+'\")'+
           'FILTER((LANG(?label)) = \"'+language+'\")}'
     )
     for (const event of wallahi){
-        
+
         if (typeof(result[event.label.value]) === 'undefined'){
 
             let abstract = "undefined"
@@ -124,6 +130,8 @@ export async function getInfoOfEvent(eventArg){
                 theme: [event.themeLabel.value],
                 abstract: abstract,
                 image: event.image.value,
+                countryId: event.country.value,
+                countryName: event.countryLabel.value,
             }
         } else {
             result[event.label.value]['theme'].push(event.themeLabel.value)
@@ -139,7 +147,6 @@ export async function getInfoOfEvent(eventArg){
     @param Event : The event inside the Wikidata
 */
 export async function getAbstractOfEvent(event){
-    console.log(event)
     const wallahi = await queryDbpedia(
         'PREFIX dbo: <http://dbpedia.org/ontology/>'+
         'SELECT ?abstract WHERE {'+
@@ -148,7 +155,7 @@ export async function getAbstractOfEvent(event){
         'FILTER((LANG(?abstract )) = \"'+language+'\")'+
         '}'
     )
-    console.log(wallahi)
+
     if(wallahi.length>0){
         return(wallahi[0].abstract.value)
     } else {
