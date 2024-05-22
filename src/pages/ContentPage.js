@@ -15,13 +15,11 @@ function ContentPage() {
   
   useEffect(() => {
 
-    console.log("JSUIS DEDANS")
     const fetchData = async () => {
       setLoading(true)
       const result = await getInfoOfEvent(event[eventkey].id);
       const resultBefore = await getHistoricalEventFromCountry(event[eventkey].countryId, result[eventkey].start, "before");
       const resultAfter = await getHistoricalEventFromCountry(event[eventkey].countryId, result[eventkey].end, "after");
-      console.log(result)
 
       setEvtBefore(resultBefore);
       setEvtAfter(resultAfter);
@@ -55,7 +53,7 @@ function ContentPage() {
           <div className="w-1/2">
             <a href="/">
               <button className="button-27" role="button">
-                Retour au tirage
+                Start again
               </button>
             </a>
           </div>
