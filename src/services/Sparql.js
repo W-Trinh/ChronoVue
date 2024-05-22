@@ -5,7 +5,6 @@ const language = "en"
     Should not be used outside of this file
 */
 async function queryWikidata(query){
-    console.log(query)
     const response = await fetch('https://query.wikidata.org/sparql?format=json&query=' + query);
     const data = await response.json();
     return data.results.bindings;
@@ -86,6 +85,7 @@ export async function getHistoricalEventFromCountry(country, date, when){
             abstract: event.desc.value,
             image: event.image.value,
             title: event.label.value,
+            countryId: country,
         }
     }
 
