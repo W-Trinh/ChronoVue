@@ -53,7 +53,7 @@ function ContentPage() {
           <div className="w-1/2">
             <a href="/">
               <button className="button-27" role="button">
-                Retour au tirage
+                Start again
               </button>
             </a>
           </div>
