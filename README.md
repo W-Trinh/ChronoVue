@@ -1,71 +1,56 @@
-# Getting Started with Create React App
+# Chronovue
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Chronovue is a web application utilizing semantic web technologies to navigate through European historical events. It allows users to observe the historical evolution of a country over historical periods.
 
-## Available Scripts
+## Description
 
-In the project directory, you can run:
+This application allows you to:
+- Select a starting event randomly in the home page.
+- Display a detailed page of the event with links to three past events and three future events.
+- The linked events are selected based on an algorithm that finds the closest events in time within the same country as the current event.
+- Return to the home page at any time.
 
-### `npm start`
+## Key Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Random Selection**: Choose a starting event within 4 randomly chosen events that can be rolled if wanted.
+- **Temporal Navigation**: Access the closest past and future historical events.
+- **Event Details**: View detailed information about historical events.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
 
-### `npm test`
+- **Frontend**: React with Redux for storing DBpedia and Wikidata identifiers.
+- **Backend**: Sparql queries to retrieve historical data.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation and Launch
 
-### `npm run build`
+To install and run the application locally, follow these steps:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js and npm (Node Package Manager) should be installed on your machine.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation
 
-### `npm run eject`
+1. Clone the application repository:
+   ```bash
+   git clone https://github.com/W-Trinh/ChronoVue.git
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Navigate to the application directory:
+    ```bash
+   cd ChronoVue
+   
+3. Install the dependencies:
+    ```bash
+   npm install
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Launch
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Start the application:
+   ```bash
+    npm start
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Open your browser and go to http://localhost:3000 to see the application in action.
 
-## Learn More
+### Authors
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# ChronoVue
+Developed by Williams TRINH and Peïo GIL.
