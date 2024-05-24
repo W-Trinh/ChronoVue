@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import sparqlReducer from '../services/sparqlSlice';
 
-// Configuration de redux-persist
+// Configuration for redux-persist
 const persistConfig = {
     key: 'root',
     storage,
@@ -12,13 +12,15 @@ const persistConfig = {
 // Combine reducers
 const rootReducer = combineReducers({
     sparql: sparqlReducer,
-    // autres slices...
 });
 
+// Persist the root reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// Configure the Redux store
 export const store = configureStore({
     reducer: persistedReducer,
 });
 
+// Persist the Redux store
 export const persistor = persistStore(store);
