@@ -53,4 +53,4 @@ To install and run the application locally, follow these steps:
 
 ### Authors
 
-Developed by Williams TRINH and Peïo GIL.
+Developed by Williams TRINH (https://github.com/W-Trinh) and Peïo GIL (https://github.com/Gipeio).
